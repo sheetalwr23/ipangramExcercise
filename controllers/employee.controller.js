@@ -2,6 +2,7 @@ const Employee = require("../models/employee.model");
 const httpStatus = require("http-status");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Project = require("../models/project.model");
 
 const createEmployee = async (req, res) => {
   const { email } = req.body;
@@ -32,4 +33,10 @@ const employeeLogin = async (req, res) => {
   res.send({ employee, token });
 };
 
-module.exports = { createEmployee, employeeLogin };
+const employeeProject = async (req, res) => {
+  const { _id } = req.params;
+  const project = await Project.find({ members: _id }).populate("members");
+  res.send(project);
+};
+
+module.exports = { createEmployee, employeeLogin, employeeProject };

@@ -4,7 +4,6 @@ const projectSchema = mongoose.Schema(
   {
     timeline: {
       type: String,
-      required: true,
     },
     startDate: {
       type: Date,
@@ -32,6 +31,10 @@ const projectSchema = mongoose.Schema(
         ref: "technology",
       },
     ],
+    mentor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "mentor",
+    },
   },
   {
     timestamps: true,

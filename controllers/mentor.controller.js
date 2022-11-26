@@ -1,4 +1,5 @@
 const Mentor = require("../models/mentor.model");
+const Project = require("../models/project.model");
 const httpStatus = require("http-status");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -23,9 +24,14 @@ const mentorLogin = async (req, res) => {
       .status(httpStatus.BAD_REQUEST)
       .json({ status: false, message: "Invalid Credentials" });
   }
-
   const token = jwt.sign(JSON.stringify(mentor), "thisisasamplesecret");
   res.send({ mentor, token });
 };
 
-module.exports = { createMentor, mentorLogin };
+const getMentorProjects = async (req, res) => {
+  const { _id } = req.params;
+  const project = await Project.find({ mentor: _id }).populate("mentor");
+  res.send(project);
+};
+
+module.exports = { createMentor, mentorLogin, getMentorProjects };
