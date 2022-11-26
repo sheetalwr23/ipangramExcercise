@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const { PORT, MONGODB_URL } = process.env;
+const fs = require("fs");
 
 const app = express();
 
@@ -31,6 +32,41 @@ app.get("/", (req, res) => {
  */
 const mentorRoutes = require("./routes/mentor.route");
 const employeeRoutes = require("./routes/employee.route");
+const technologyeRoutes = require("./routes/technology.route");
 
 app.use("/api/v1/", mentorRoutes);
 app.use("/api/v1/", employeeRoutes);
+app.use("/api/v1/", technologyeRoutes);
+
+/**
+ * File Donwloading Path
+ */
+app.get("/api/v1/image/:filename", function (req, res) {
+  var filePath = "/uploads/" + req.params.filename;
+  fs.readFile(__dirname + filePath, function (err, data) {
+    if (err) {
+      res.send(err);
+    } else {
+      if (req.params.filename) {
+        if (
+          req.params.filename.split(".")[
+            req.params.filename.split(".").length - 1
+          ] == "pdf"
+        ) {
+          var file = fs.createReadStream(__dirname + filePath);
+          var stat = fs.statSync(__dirname + filePath);
+          res.setHeader("Content-Length", stat.size);
+          res.setHeader("Content-Type", "application/pdf");
+          res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=" + req.params.filename
+          );
+          file.pipe(res);
+        } else {
+          res.contentType("application/image");
+          res.send(data);
+        }
+      }
+    }
+  });
+});
