@@ -1,4 +1,3 @@
-const Employee = require("../models/employee.model");
 const { uploadFile } = require("../services/common.services");
 const fs = require("fs");
 
@@ -35,7 +34,10 @@ const getOneTechnology = async (req, res) => {
 
 const updateTechnology = async (req, res) => {
   const { _id } = req.params;
-  const name = req.file ? await uploadFile("technology_", req.file) : "";
+  const oldTech = await Technology.findOne({ _id });
+  const name = req.file
+    ? await uploadFile("technology_", req.file)
+    : oldTech.image;
   req.body.image = name;
   const technology = await Technology.updateOne({ _id }, req.body);
   res.send(technology);

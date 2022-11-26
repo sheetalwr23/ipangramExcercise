@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const { PORT, MONGODB_URL } = process.env;
 const fs = require("fs");
+const helmet = require("helmet");
 
 const app = express();
 
@@ -12,6 +13,7 @@ const app = express();
  */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(helmet());
 
 /**
  * Database Connectivity
@@ -33,10 +35,12 @@ app.get("/", (req, res) => {
 const mentorRoutes = require("./routes/mentor.route");
 const employeeRoutes = require("./routes/employee.route");
 const technologyeRoutes = require("./routes/technology.route");
+const projectRoutes = require("./routes/project.route");
 
 app.use("/api/v1/", mentorRoutes);
 app.use("/api/v1/", employeeRoutes);
 app.use("/api/v1/", technologyeRoutes);
+app.use("/api/v1/", projectRoutes);
 
 /**
  * File Donwloading Path
