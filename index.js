@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+require("dotenv").config();
+const { PORT, MONGODB_URL } = process.env;
 
 const app = express();
 
@@ -10,8 +12,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-require("dotenv").config();
-const { PORT, MONGODB_URL } = process.env;
 /**
  * Database Connectivity
  */
@@ -26,6 +26,11 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+/**
+ * Routes For All APIS
+ */
 const mentorRoutes = require("./routes/mentor.route");
+const employeeRoutes = require("./routes/employee.route");
 
 app.use("/api/v1/", mentorRoutes);
+app.use("/api/v1/", employeeRoutes);
