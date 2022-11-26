@@ -36,11 +36,13 @@ const mentorRoutes = require("./routes/mentor.route");
 const employeeRoutes = require("./routes/employee.route");
 const technologyeRoutes = require("./routes/technology.route");
 const projectRoutes = require("./routes/project.route");
+const taskRouter = require("./routes/task.route");
 
 app.use("/api/v1/", mentorRoutes);
 app.use("/api/v1/", employeeRoutes);
 app.use("/api/v1/", technologyeRoutes);
 app.use("/api/v1/", projectRoutes);
+app.use("/api/v1/", taskRouter);
 
 /**
  * File Donwloading Path
